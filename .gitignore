@@ -5,3 +5,4 @@
 /ApiTesting/.vs/
 /ApiTesting/ApiTesting/obj
 /ApiTesting/ApiTesting/bin
+*.user
