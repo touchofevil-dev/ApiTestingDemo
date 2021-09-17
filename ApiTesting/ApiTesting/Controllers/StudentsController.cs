@@ -9,7 +9,8 @@ namespace ApiTesting.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private IDictionary<Guid, Student> _studentRecords = new Dictionary<Guid, Student>();
+        private static IDictionary<Guid, Student> _studentRecords = DataProvider.GetInitialStudentData();
+
         // GET: api/<StudentsController>
         [HttpGet]
         public IEnumerable<Student> Get()
@@ -19,27 +20,49 @@ namespace ApiTesting.Controllers
 
         // GET api/<StudentsController>/5
         [HttpGet("{id}")]
-        public string Get(Guid id)
+        public IActionResult Get(Guid id)
         {
-            return "value";
+            if (_studentRecords.ContainsKey(id))
+            {
+                return Ok(_studentRecords[id]);
+            }
+            return NotFound();
         }
 
         // POST api/<StudentsController>
         [HttpPost]
-        public void Post([FromBody] Student value)
+        public IActionResult Post([FromBody] Student requestModel)
         {
+            if (_studentRecords.ContainsKey(requestModel.Id))
+            {
+                return Conflict();
+            }
+            _studentRecords.Add(requestModel.Id, requestModel);
+            return CreatedAtAction("Get", requestModel);
         }
 
         // PUT api/<StudentsController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Student value)
+        public IActionResult Put(Guid id, [FromBody] Student requestModel)
         {
+            if (_studentRecords.ContainsKey(id))
+            {
+                _studentRecords[id] = requestModel;
+                return NoContent();
+            }
+            return NotFound();
         }
 
         // DELETE api/<StudentsController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public IActionResult Delete(Guid id)
         {
+            if (_studentRecords.ContainsKey(id))
+            {
+                _studentRecords.Remove(id);
+                return NoContent();
+            }
+            return NotFound();
         }
     }
 }
