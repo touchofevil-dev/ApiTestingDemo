@@ -1,0 +1,230 @@
+{
+	"info": {
+		"_postman_id": "eebac9ea-ab5f-4ff6-a8df-4e7362d612a1",
+		"name": "CollectionsDemo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "All Students",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response data is empty array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.length(5);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 200ms.\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response data property values are correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.firstName).to.equal('Tom');\r",
+							"    pm.expect(jsonData.lastName).to.equal('Riddle');\r",
+							"    pm.expect(jsonData.age).to.equal(18);\r",
+							"    pm.expect(jsonData.rollNo).to.equal(1);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 100ms.\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/students/36b1b202-2fe0-4e47-9dd8-6e2f9d1fb20a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"students",
+						"36b1b202-2fe0-4e47-9dd8-6e2f9d1fb20a"
+					]
+				},
+				"description": "Tom Riddle"
+			},
+			"response": []
+		},
+		{
+			"name": "Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(\"Response data property values are correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.equal('ebda4323-b023-4b62-87f2-54adb562cc43');\r",
+							"    pm.expect(jsonData.firstName).to.equal('Ginny');\r",
+							"    pm.expect(jsonData.lastName).to.equal('Weasley');\r",
+							"    pm.expect(jsonData.age).to.equal(11);\r",
+							"    pm.expect(jsonData.rollNo).to.equal(8);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 100ms.\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"EBDA4323-B023-4B62-87F2-54ADB562CC43\",\r\n    \"firstName\": \"Ginny\",\r\n    \"lastName\": \"Weasley\",\r\n    \"age\": 11,\r\n    \"rollNo\": 8\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 100ms.\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"2b5b32f5-877d-49ae-8304-971e2e814ef1\",\r\n    \"firstName\": \"Ronald\",\r\n    \"lastName\": \"Weasley\",\r\n    \"age\": 13,\r\n    \"rollNo\": 3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/students/2b5b32f5-877d-49ae-8304-971e2e814ef1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"students",
+						"2b5b32f5-877d-49ae-8304-971e2e814ef1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 100ms.\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(100);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/students/cfaf80cc-f7a4-436f-a671-387253d8e6c1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"students",
+						"cfaf80cc-f7a4-436f-a671-387253d8e6c1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
