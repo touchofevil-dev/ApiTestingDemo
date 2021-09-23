@@ -1,0 +1,48 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- collections
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet '
+  inputs:
+    checkLatest: true
+
+- script: 'npm install -g newman'
+  displayName: 'Install Newman'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: '**/*.csproj'
+    arguments: '--output $(Build.BinariesDirectory) --configuration Release'
+    zipAfterPublish: false
+    modifyOutputPath: false
+
+- script: 'start $(Build.BinariesDirectory)\ApiTesting.exe'
+  workingDirectory: ApiTesting/collections
+  displayName: 'Run Api'
+
+- script: 'newman run CollectionsDemo.postman_collection.json -x --reporters cli,junit --reporter-junit-export $(Build.SourcesDirectory)\Results\apitest-report.xml'
+  workingDirectory: ApiTesting/collections
+  displayName: 'Run Api Tests'
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results'
+  inputs:
+    testResultsFiles: '$(Build.SourcesDirectory)\Results\apitest-report.xml'
+    searchFolder: '$(Build.SourcesDirectory)'
+    failTaskOnFailedTests: true
+
+- script: 'taskkill /F /IM ApiTesting.exe'
+  workingDirectory: ApiTesting/collections
+  displayName: 'Kill API'
